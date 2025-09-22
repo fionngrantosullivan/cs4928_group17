@@ -7,6 +7,7 @@ import com.cafepos.common.Product;
 public final class LineItem {
     private final Product product;
     private final int quantity;
+
     public LineItem(Product product, int quantity) {
         if (product == null) throw new
                 IllegalArgumentException("product required");
@@ -14,8 +15,11 @@ public final class LineItem {
                 IllegalArgumentException("quantity must be > 0");
         this.product = product; this.quantity = quantity;
     }
+
     public Product product() { return product; }
+
     public int quantity() { return quantity; }
+
     public Money lineTotal() { return
             product.basePrice().multiply(quantity); }
 }
