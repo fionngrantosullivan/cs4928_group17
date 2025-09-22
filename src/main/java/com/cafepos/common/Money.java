@@ -13,6 +13,7 @@ public final class Money implements Comparable<Money> {
     private final BigDecimal amount;
 
     public static Money of(double value) {
+        // creates Money object from double value - BigDecimal ensures precision when rounding
         return new Money(BigDecimal.valueOf(value));
     }
 
@@ -22,7 +23,11 @@ public final class Money implements Comparable<Money> {
 
     private Money(BigDecimal a) {
         if (a == null) throw new IllegalArgumentException("amount required");
+
+        // enforce 2 decimal places when rounding
         BigDecimal scaled = a.setScale(2, RoundingMode.HALF_UP);
+
+        // no negative values allowed
         if (scaled.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("amount cannot be negative");
         }
@@ -37,6 +42,7 @@ public final class Money implements Comparable<Money> {
     }
 
     public Money multiply(int qty) {
+        // can't multiply by negative number (since negative Money values aren't allowed)
         if (qty < 0) {
             throw new IllegalArgumentException("quantity cannot be negative");
         }
