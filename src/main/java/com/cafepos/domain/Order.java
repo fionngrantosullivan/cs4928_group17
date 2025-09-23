@@ -15,15 +15,6 @@ public final class Order {
         this.id = id;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public List<LineItem> getItems() {
-        // retrieves copy to prevent external modification
-        return List.copyOf(items); // defensive copy
-    }
-
     public void addItem(LineItem li) {
         if (li == null) {
             throw new IllegalArgumentException("line item required");
@@ -35,6 +26,7 @@ public final class Order {
     }
 
     public Money subtotal() {
+        // for each LineItem in this order, adds the lineTotal value with the next to get total sum of Order (without tax)
         return items.stream()
                 .map(LineItem::lineTotal)
                 .reduce(Money.zero(), Money::add);
@@ -85,6 +77,7 @@ public final class Order {
     }
 
     public Collection<Object> items() {
+        // retrieves copy to prevent external modification
         return List.copyOf(items);
     }
 }
