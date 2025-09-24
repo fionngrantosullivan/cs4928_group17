@@ -16,15 +16,6 @@ public final class Order {
         this.id = id;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public List<LineItem> getItems() {
-        return List.copyOf(items); // defensive copy
-    }
-
-    // Add item if quantity > 0 (LineItem constructor already enforces this)
     public void addItem(LineItem li) {
         if (li == null) {
             throw new IllegalArgumentException("line item required");
@@ -35,14 +26,13 @@ public final class Order {
         items.add(li);
     }
 
-    // Subtotal of all items (already provided in skeleton)
     public Money subtotal() {
+        // for each LineItem in this order, adds the lineTotal value with the next to get total sum of Order (without tax)
         return items.stream()
                 .map(LineItem::lineTotal)
                 .reduce(Money.zero(), Money::add);
     }
 
-    // Tax calculation
     public Money taxAtPercent(int percent) {
         if (percent < 0) {
             throw new IllegalArgumentException("tax percent must be >= 0");
@@ -57,7 +47,6 @@ public final class Order {
         );
     }
 
-    // Total with tax
     public Money totalWithTax(int percent) {
         return subtotal().add(taxAtPercent(percent));
     }
@@ -76,6 +65,7 @@ public final class Order {
 
     @Override
     public boolean equals(Object o) {
+        // first check is if they're the same object in memory, then it compares IDs to complete the check
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
         Order order = (Order) o;
@@ -88,6 +78,7 @@ public final class Order {
     }
 
     public Collection<Object> items() {
+        // retrieves copy to prevent external modification
         return List.copyOf(items);
     }
 
