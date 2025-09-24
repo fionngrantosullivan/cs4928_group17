@@ -1,7 +1,5 @@
-package com.cafepos.common;
-
+﻿package com.cafepos.common;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Objects;
 
 public final class Money implements Comparable<Money> {
@@ -22,7 +20,8 @@ public final class Money implements Comparable<Money> {
 
     private Money(BigDecimal a) {
         if (a == null) throw new IllegalArgumentException("amount required");
-        BigDecimal scaled = a.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal scaled = a.setScale(2, java.math.RoundingMode.HALF_UP);
+
         if (scaled.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("amount cannot be negative");
         }

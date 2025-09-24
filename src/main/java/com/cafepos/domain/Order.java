@@ -1,4 +1,5 @@
 package com.cafepos.domain;
+import Payment.PaymentStrategy;
 import com.cafepos.common.Money;
 
 import java.math.BigDecimal;
@@ -88,6 +89,12 @@ public final class Order {
 
     public Collection<Object> items() {
         return List.copyOf(items);
+    }
+
+    public void pay(PaymentStrategy strategy) {
+        if (strategy == null) throw new
+                IllegalArgumentException("strategy required");
+        strategy.pay(this);
     }
 }
 
