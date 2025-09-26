@@ -72,6 +72,6 @@ public final class Money implements Comparable<Money> {
 
     @Override
     public String toString() {
-        return "€" + amount.toString();
+        return amount.toString();
     }
 }

@@ -1,5 +1,6 @@
 package com.cafepos.domain;
-import Payment.PaymentStrategy;
+
+import com.cafepos.payment.PaymentStrategy;
 import com.cafepos.common.Money;
 
 import java.math.BigDecimal;
