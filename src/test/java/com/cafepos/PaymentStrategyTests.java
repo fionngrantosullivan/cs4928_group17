@@ -19,7 +19,7 @@ class PaymentStrategyTests {
     }
 
     @Test
-    void testPaymentStrategyCalled() {
+    void payment_strategy_calls() {
         Order order = createSampleOrder();
         final boolean[] called = {false};
         PaymentStrategy fake = o -> called[0] = true;
@@ -30,7 +30,7 @@ class PaymentStrategyTests {
     }
 
     @Test
-    void testCashPaymentPrintsMessage() {
+    void cash_payment_prints_message() {
         Order order = createSampleOrder();
         PaymentStrategy cash = new CashPayment();
 
@@ -46,7 +46,7 @@ class PaymentStrategyTests {
     }
 
     @Test
-    void testCardPaymentMasksCardNumber() {
+    void card_payment_masks_card_number() {
         Order order = createSampleOrder();
         PaymentStrategy card = new CardPayment("1234567812341234");
 
@@ -63,7 +63,7 @@ class PaymentStrategyTests {
     }
 
     @Test
-    void testWalletPaymentIncludesWalletId() {
+    void wallet_payment_includes_wallet_id() {
         Order order = createSampleOrder();
         PaymentStrategy wallet = new WalletPayment("my-wallet");
 
@@ -80,7 +80,7 @@ class PaymentStrategyTests {
     }
 
     @Test
-    void testOrderPayWithNullStrategyThrows() {
+    void order_pay_with_null_strategy_throws() {
         Order order = createSampleOrder();
 
         assertThrows(IllegalArgumentException.class, () -> order.pay(null),

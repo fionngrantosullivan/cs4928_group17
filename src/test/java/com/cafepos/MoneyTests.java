@@ -1,7 +1,6 @@
 package com.cafepos;
 
 import com.cafepos.common.*;
-import com.cafepos.domain.*;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MoneyTests {
 
     @Test
-    void testAddition() {
+    void addition() {
         Money a = Money.of(2.00);
         Money b = Money.of(3.00);
         Money result = a.add(b);
@@ -17,14 +16,14 @@ class MoneyTests {
     }
 
     @Test
-    void testMultiply() {
+    void multiply() {
         Money price = Money.of(2.50);
         Money result = price.multiply(4);
         assertEquals(Money.of(10.00), result);
     }
 
     @Test
-    void testNoNegativeAllowed() {
+    void no_negative_allowed() {
         assertThrows(IllegalArgumentException.class, () -> Money.of(-1.00));
         assertThrows(IllegalArgumentException.class, () -> Money.of(1.00).multiply(-2));
     }
