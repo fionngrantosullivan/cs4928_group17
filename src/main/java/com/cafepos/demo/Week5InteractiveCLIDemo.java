@@ -13,10 +13,7 @@ import com.cafepos.payment.*;
 
 import java.util.Scanner;
 
-/**
- * Interactive Cafe POS System
- * Demonstrates product customization, recipe-based ordering, and order management
- */
+
 public final class Week5InteractiveCLIDemo {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -355,12 +352,6 @@ public final class Week5InteractiveCLIDemo {
         System.out.println("  Product: " + largeFinal.name());
         System.out.println("  Total Price: EUR " + ((Priced) largeFinal).price());
         System.out.println("  Price Breakdown: 2.50 + 0.80 + 0.50 + 0.70 = 4.50");
-
-        System.out.println("\nKEY FEATURES:");
-        System.out.println("  - Customizations can be combined in any order");
-        System.out.println("  - Each add-on is tracked separately");
-        System.out.println("  - Price updates automatically");
-        System.out.println("  - Easy to add or remove options");
 
         System.out.println("\n" + "=".repeat(60) + "\n");
     }
