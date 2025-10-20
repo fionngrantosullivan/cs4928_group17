@@ -3,6 +3,9 @@ package com.cafepos.smells;
 import com.cafepos.common.Money;
 import com.cafepos.factory.ProductFactory;
 import com.cafepos.common.Product;
+import com.cafepos.payment.PaymentStrategy;
+import com.cafepos.payment.PaymentStrategyFactory;
+
 import java.math.BigDecimal;
 
 public class OrderManagerGod {
@@ -74,17 +77,8 @@ public class OrderManagerGod {
         // God Class & Long Method: Responsibility #7 - Payment I/O & side effects
         // Feature Envy/Shotgun Surgery: Payment method logic embedded inline
         // Primitive Obsession: Using raw strings for payment types
-        if (paymentType != null) {
-            if (paymentType.equalsIgnoreCase("CASH")) {
-                System.out.println("[Cash] Customer paid " + total + " EUR");
-            } else if (paymentType.equalsIgnoreCase("CARD")) {
-                System.out.println("[Card] Customer paid " + total + " EUR with card ****1234");
-            } else if (paymentType.equalsIgnoreCase("WALLET")) {
-                System.out.println("[Wallet] Customer paid " + total + " EUR via wallet user-wallet-789");
-            } else {
-                System.out.println("[UnknownPayment] " + total);
-            }
-        }
+        PaymentStrategy paymentStrategy = PaymentStrategyFactory.create(paymentType);
+        paymentStrategy.processPayment(total);
 
         // God Class & Long Method: Responsibility #8 - Receipt formatting
         StringBuilder receipt = new StringBuilder();
