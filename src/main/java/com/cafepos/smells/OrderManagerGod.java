@@ -2,7 +2,8 @@ package com.cafepos.smells;
 
 import com.cafepos.common.Money;
 import com.cafepos.factory.ProductFactory;
-import com.cafepos.catalog.Product;
+import com.cafepos.common.Product;
+import java.math.BigDecimal;
 
 public class OrderManagerGod {
     // Global/Static State: Mutable static variable accessible from anywhere
@@ -21,7 +22,7 @@ public class OrderManagerGod {
         // God Class & Long Method: Responsibility #2 - Pricing logic
         Money unitPrice;
         try {
-            var priced = product instanceof com.cafepos.decorator.Priced
+            var priced = product instanceof com.cafepos.common.Priced
                     p ? p.price() : product.basePrice();
             unitPrice = priced;
         } catch (Exception e) {
@@ -31,7 +32,7 @@ public class OrderManagerGod {
         if (qty <= 0) qty = 1;
 
         // God Class & Long Method: Responsibility #3 - Subtotal calculation
-        Money subtotal = unitPrice.multiply(qty);
+        Money subtotal = unitPrice.multiply(BigDecimal.valueOf(qty));
 
         // God Class & Long Method: Responsibility #4 - Discount application
         Money discount = Money.zero();

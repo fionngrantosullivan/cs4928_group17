@@ -3,6 +3,9 @@ package com.cafepos;
 import com.cafepos.common.*;
 
 import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MoneyTests {
@@ -18,14 +21,14 @@ class MoneyTests {
     @Test
     void multiply() {
         Money price = Money.of(2.50);
-        Money result = price.multiply(4);
+        Money result = price.multiply(BigDecimal.valueOf(4));
         assertEquals(Money.of(10.00), result);
     }
 
     @Test
     void no_negative_allowed() {
         assertThrows(IllegalArgumentException.class, () -> Money.of(-1.00));
-        assertThrows(IllegalArgumentException.class, () -> Money.of(1.00).multiply(-2));
+        assertThrows(IllegalArgumentException.class, () -> Money.of(1.00).multiply(BigDecimal.valueOf(-2)));
     }
 }
 

@@ -14,7 +14,6 @@ public interface DiscountPolicy {
                 .divide(BigDecimal.valueOf(100)));
     }
 }
-
 // Concrete strategy for 5% loyalty discount
 class LoyaltyDiscount implements DiscountPolicy {
     private static final int LOYALTY_PERCENT = 5;
