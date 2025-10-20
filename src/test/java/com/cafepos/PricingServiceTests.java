@@ -10,7 +10,7 @@ class PricingServiceTests {
     @Test
     void pricing_with_loyalty_discount_and_tax() {
         PricingService pricing = new PricingService(
-                new LoyaltyDiscount(5),
+                new LoyaltyPercentDiscount(5),
                 new FixedRateTaxPolicy(10)
         );
 
