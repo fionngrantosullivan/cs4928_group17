@@ -41,7 +41,7 @@ public final class Money implements Comparable<Money> {
         return new Money(this.amount.add(other.amount));
     }
 
-    public Money multiply(int qty) {
+    public Money multiply(BigDecimal qty) {
         // can't multiply by negative number (since negative Money values aren't allowed)
         if (qty < 0) {
             throw new IllegalArgumentException("quantity cannot be negative");
@@ -73,5 +73,13 @@ public final class Money implements Comparable<Money> {
     @Override
     public String toString() {
         return amount.toString();
+    }
+
+    public Money asBigDecimal() {
+        return null;
+    }
+
+    public double divide(BigDecimal bigDecimal) {
+        return 0;
     }
 }
