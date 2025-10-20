@@ -4,6 +4,8 @@ import com.cafepos.common.Money;
 import com.cafepos.common.Priced;
 import com.cafepos.common.Product;
 
+import java.math.BigDecimal;
+
 
 public final class LineItem {
     private final Product product;
@@ -23,6 +25,6 @@ public final class LineItem {
 
     public Money lineTotal() {
         Money unit = (product instanceof Priced p) ? p.price() : product.basePrice();
-        return unit.multiply(quantity);
+        return unit.multiply(BigDecimal.valueOf(quantity));
     }
 }

@@ -41,12 +41,12 @@ public final class Money implements Comparable<Money> {
         return new Money(this.amount.add(other.amount));
     }
 
-    public Money multiply(int qty) {
+    public Money multiply(BigDecimal qty) {
         // can't multiply by negative number (since negative Money values aren't allowed)
-        if (qty < 0) {
+        if (qty == null) {
             throw new IllegalArgumentException("quantity cannot be negative");
         }
-        return new Money(this.amount.multiply(BigDecimal.valueOf(qty)));
+        return new Money(this.amount.multiply(qty));
     }
 
     @Override
@@ -73,5 +73,26 @@ public final class Money implements Comparable<Money> {
     @Override
     public String toString() {
         return amount.toString();
+    }
+
+    public BigDecimal asBigDecimal() {
+        return amount;
+    }
+
+    public double divide(BigDecimal bigDecimal) {
+        return 0;
+    }
+    public static Money of(BigDecimal value) {
+        if (value == null) throw new IllegalArgumentException("value required");
+        return new Money(value);
+    }
+
+
+    public int signum() {
+        return 0;
+    }
+
+    public double subtract(Money bigDecimal) {
+        return 0;
     }
 }
