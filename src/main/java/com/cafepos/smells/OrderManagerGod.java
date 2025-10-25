@@ -1,16 +1,14 @@
 package com.cafepos.smells;
-
 import com.cafepos.common.Money;
 import com.cafepos.factory.ProductFactory;
 import com.cafepos.common.Product;
-import com.cafepos.payment.PaymentStrategy;
-import com.cafepos.payment.PaymentStrategyFactory;
 
 import java.math.BigDecimal;
 
 public class OrderManagerGod {
     // Global/Static State: Mutable static variable accessible from anywhere
     public static int TAX_PERCENT = 10;
+
     // Global/Static State: Another mutable static variable for side effects
     public static String LAST_DISCOUNT_CODE = null;
 
@@ -31,7 +29,6 @@ public class OrderManagerGod {
         } catch (Exception e) {
             unitPrice = product.basePrice();
         }
-
         if (qty <= 0) qty = 1;
 
         // God Class & Long Method: Responsibility #3 - Subtotal calculation
@@ -71,25 +68,34 @@ public class OrderManagerGod {
         var tax = Money.of(discounted.asBigDecimal()
                 .multiply(java.math.BigDecimal.valueOf(TAX_PERCENT))
                 .divide(java.math.BigDecimal.valueOf(100)));
-
         var total = discounted.add(tax);
 
         // God Class & Long Method: Responsibility #7 - Payment I/O & side effects
         // Feature Envy/Shotgun Surgery: Payment method logic embedded inline
         // Primitive Obsession: Using raw strings for payment types
-        PaymentStrategy paymentStrategy = PaymentStrategyFactory.create(paymentType);
-        paymentStrategy.processPayment(total);
+        if (paymentType != null) {
+            if (paymentType.equalsIgnoreCase("CASH")) {
+                System.out.println("[Cash] Customer paid " + total + " EUR");
+            } else if (paymentType.equalsIgnoreCase("CARD")) {
+                System.out.println("[Card] Customer paid " + total + " EUR with card ****1234");
+            } else if (paymentType.equalsIgnoreCase("WALLET")) {
+                System.out.println("[Wallet] Customer paid " + total + " EUR via wallet user-wallet-789");
+            } else {
+                System.out.println("[UnknownPayment] " + total);
+            }
+        }
 
         // God Class & Long Method: Responsibility #8 - Receipt formatting
         StringBuilder receipt = new StringBuilder();
         receipt.append("Order (").append(recipe).append(") x").append(qty).append("\n");
-        receipt.append("Subtotal: ").append(subtotal).append("\n");
+                receipt.append("Subtotal: ").append(subtotal).append("\n");
         if (discount.asBigDecimal().signum() > 0) {
             receipt.append("Discount: -").append(discount).append("\n");
         }
+
         // Shotgun Surgery: Tax display format coupled to this method; change requires editing here
         receipt.append("Tax (").append(TAX_PERCENT).append("%): ").append(tax).append("\n");
-        receipt.append("Total: ").append(total);
+                receipt.append("Total: ").append(total);
 
         String out = receipt.toString();
 
@@ -97,7 +103,6 @@ public class OrderManagerGod {
         if (printReceipt) {
             System.out.println(out);
         }
-
         return out;
     }
 }
