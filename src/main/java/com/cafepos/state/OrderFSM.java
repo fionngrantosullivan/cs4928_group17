@@ -7,7 +7,7 @@ public final class OrderFSM {
     void set(State s) { this.state = s; }
 
     public String status() { return state.name(); }
-    
+
     public void pay() { state.pay(this); }
 
     public void prepare() { state.prepare(this); }
