@@ -5,7 +5,6 @@ import com.cafepos.common.Money;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -118,7 +117,7 @@ public final class Order implements OrderPublisher {
     }
 
     // return a read-only copy of the typed items list
-    public Collection<LineItem> items() {
+    public List<LineItem> items() {
         return List.copyOf(items);
     }
 }

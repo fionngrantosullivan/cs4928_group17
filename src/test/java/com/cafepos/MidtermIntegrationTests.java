@@ -1,10 +1,11 @@
 package com.cafepos;
 
 import com.cafepos.catalog.*;
-import com.cafepos.checkout.CheckoutService;
+import com.cafepos.app.CheckoutService;
 import com.cafepos.common.*;
 import com.cafepos.domain.*;
 import com.cafepos.factory.ProductFactory;
+import com.cafepos.infra.InMemoryOrderRepository;
 import com.cafepos.payment.*;
 import com.cafepos.pricing.*;
 import org.junit.jupiter.api.Test;
@@ -14,20 +15,28 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/*
+ * This was updated after the midterm for consistency with the week 10 updates, which we've commented where relevant.
+ */
+
 class MidtermIntegrationTests {
 
     @Test
     void complete_workflow_all_patterns_integrated() {
-        // initialise factory from Week 5
-        ProductFactory factory = new ProductFactory();
+        // setup infrastructure for Week 10 architecture
+        var orderRepo = new InMemoryOrderRepository();
 
         // setup for pricing with discount and tax policies
         PricingService pricing = new PricingService(
                 new LoyaltyPercentDiscount(5),
                 new FixedRateTaxPolicy(10)
         );
-        ReceiptPrinter printer = new ReceiptPrinter();
-        CheckoutService checkout = new CheckoutService(factory, pricing, printer, 10);
+
+        // initialise CheckoutService using new week 10 architecture
+        CheckoutService checkout = new CheckoutService(orderRepo, pricing);
+
+        // initialise factory from Week 5
+        ProductFactory factory = new ProductFactory();
 
         // create Order for registering Observer classes
         Order order = new Order(OrderIds.next());
@@ -54,6 +63,9 @@ class MidtermIntegrationTests {
         // add LineItems to order (Week 2)
         order.addItem(new LineItem(espressoWithExtras, 1));
         order.addItem(new LineItem(largeLatte, 2));
+
+        // save order to repository (required for checkout)
+        orderRepo.save(order);
 
         // verify order calculations
         // 3.80 + (3.90 * 2) = 11.60, + (11.60 * 10%) = 12.76
@@ -85,15 +97,15 @@ class MidtermIntegrationTests {
         assertEquals("ready", observerEvents.get(3));
 
         // test checkout service with pricing (Week 6)
-        String receipt = checkout.checkout("LAT+L", 2);
+        String receipt = checkout.checkout(order.id(), 10);
 
         // verify receipt format and calculations
-        //
-        assertTrue(receipt.contains("Order (LAT+L) x2"));
-        assertTrue(receipt.contains("Subtotal: 7.80"));
-        assertTrue(receipt.contains("Discount: -0.39"));
-        assertTrue(receipt.contains("Tax (10%): 0.74"));
-        assertTrue(receipt.contains("Total: 8.15"));
+        assertTrue(receipt.contains("Order #" + order.id()));
+        assertTrue(receipt.contains("Espresso + Extra Shot + Oat Milk"));
+        assertTrue(receipt.contains("Latte (Large)"));
+        assertTrue(receipt.contains("Subtotal: 11.60"));
+        assertTrue(receipt.contains("Tax (10%): 1.16"));
+        assertTrue(receipt.contains("Total: 12.76"));
     }
 
     @Test
