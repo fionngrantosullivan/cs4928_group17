@@ -2,6 +2,20 @@
 
 This system encompasses a Point-Of-Sale system for a café using Java. Across the course of this project, we learnt several new programming practices, paradigms, and principles that have assisted us in the creation of easily testable, extensible, modular and flexible code. These include things such as the enforcement of the SOLID principles during the project creation process, and the implementation of various design patterns. Through following the lab steps and implementing these practices, we've produced a result that we're happy with, which fulfills the POS Café system that was the primary objective of the project, but also remains extensible and flexible despite its wide array of functions.
 
+## SOLID Principles
+
+This project demonstrates adherence to SOLID principles throughout the codebase:
+
+| Principle             | Description                                         | Implementation Example                                                                                                                                                                                                                                 |
+|-----------------------|-----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Single Responsibility | Each class has one reason to change                 | `DiscountPolicy` - calculates discounts<br>`TaxPolicy` - calculates tax<br>`ReceiptPrinter` - formats receipts<br>`CheckoutService` - orchestrates checkout<br>`OrderController` - handles user commands                                               |
+| Open/Closed           | Open for extension, closed for modification         | Add new discount types by implementing `DiscountPolicy` interface<br>Add payment methods by implementing `PaymentStrategy` interface<br>Add order states by implementing `State` interface<br>No existing code needs modification                      |
+| Liskov Substitution   | Subtypes must be substitutable for their base types | Any `DiscountPolicy` implementation works with `PricingService`<br>Any `PaymentStrategy` works with `Order.pay()`<br>Any `State` implementation works with `OrderFSM`<br>Any `OrderRepository` implementation works in controllers                     |
+| Interface Segregation | Clients shouldn't depend on methods they don't use  | `DiscountPolicy` and `TaxPolicy` are separate interfaces<br>`OrderObserver` has single `updated()` method<br>`Command` interface has optional `undo()`<br>Small, focused interfaces prevent forced implementations                                     |
+| Dependency Inversion  | Depend on abstractions, not concretions             | `CheckoutService` depends on `DiscountPolicy`/`TaxPolicy` interfaces<br>`OrderController` depends on `OrderRepository` interface<br>`OrderFSM` depends on `State` interface<br>Infrastructure implements domain interfaces (`InMemoryOrderRepository`) |
+
+---
+
 ## Design Patterns Implemented
 
 This project implements the following design patterns:
@@ -30,8 +44,6 @@ The system follows a four-layer architecture:
 - `ConsoleView` - MVC View, displays output to console
 - `EventWiringDemo` - Demonstrates event-driven UI updates
 
----
-
 ### 2. Application Layer (`com.cafepos.app`, `com.cafepos.app.events`)
 **Responsibility**: Coordinate application workflows and use cases
 
@@ -40,8 +52,6 @@ The system follows a four-layer architecture:
 - `ReceiptFormatter` - Formats receipts for display
 - `EventBus` - Pub-sub event system for decoupling
 - Events: `OrderCreated`, `OrderPaid`, `OrderEvent`
-
----
 
 ### 3. Domain Layer (Multiple packages organized by business concept)
 **Responsibility**: Core business logic and rules
@@ -102,8 +112,6 @@ The system follows a four-layer architecture:
 **Note**: The domain layer is organized by business concept rather than technical layer. Each package represents one
 domain concept (payment strategies, order lifecycle, pricing rules, etc.), following Domain-Driven Design principles.
 
----
-
 ### 4. Infrastructure Layer (`com.cafepos.infra`, `com.cafepos.catalog`, `com.cafepos.printing`)
 **Responsibility**: Technical implementations and external system adapters
 
@@ -121,19 +129,15 @@ domain concept (payment strategies, order lifecycle, pricing rules, etc.), follo
 - `Printer` - Modern printer interface
 - `LegacyPrinterAdapter` - Adapter for integrating legacy thermal printer
 
----
-
 ## Architecture Decision Records (ADRs)
 
 This project includes Architecture Decision Records documenting key architectural choices:
 
-- **ADR-1**: EventBus for UI-Application Decoupling (`docs/ADR-1-eventbus-for-decoupling.md`)
-- **ADR-2**: Four-Layer Architecture (`docs/ADR-2-four-layer-architecture.md`)
-- **ADR-3**: InMemory Repository (`docs/ADR-3-inmemory-repository.md`)
+- **ADR 1**: EventBus for UI-Application Decoupling (`docs/ADR-1-eventbus-for-decoupling.md`)
+- **ADR 2**: Four-Layer Architecture (`docs/ADR-2-four-layer-architecture.md`)
+- **ADR 3**: InMemory Repository (`docs/ADR-3-inmemory-repository.md`)
 
 Each ADR documents the context, alternatives considered, decision made, and consequences.
-
----
 
 ## Testing
 
@@ -144,8 +148,6 @@ The project includes comprehensive test coverage with 13 test classes:
 - Domain logic tests
 - Payment strategy tests
 - Pricing and discount tests
-
----
 
 # Lab Reflections
 
