@@ -182,3 +182,27 @@ Dependency Inversion (CheckoutService depends on abstractions: DiscountPolicy/Ta
 
 **Adding New Discount Type:** 
 Create a new class that implements the DiscountPolicy interface, implement the discountOf(Money) method with the discount logic, optionally add a new corresponding token to DiscountPolicyFactory.create() if factory-based creation is required. No changes required to any of the other classes implementing DiscountPolicy.
+
+## Week 10 Layering vs Partitioning Trade-offs Reflection
+
+**Layered Monolith vs. Microservices:**
+We chose to keep everything within a layered monolith for now to prioritise simplicity during this project, and
+maintain focus on implementing the design patterns studied during this module, as well as to speed up development,
+since maintaining separation of microservices could provide an additional layer of consideration in the project.
+A layered monolith also means easier debugging since we'd have the full stack trace upon any error occurring.
+
+**Natural Candidates for Future Partitioning:**
+The payment package (`com.cafepos.payment`) would be a clear seam for future partitioning, as it could become a 
+Payment service that could even be integrated with a real-world payment API like Stripe in the future.
+
+The observer pattern we've implemented in `com.cafepos.domain` could also be partitioned into a separate Notification 
+service, a popular choice when incorporating microservices into a system.
+
+A final possible service could include the `com.cafepos.menu` package, creating a separate Menu service, which could be 
+even more useful if the café menu required frequent updates and changes.
+
+**Connectors/Protocols to Define if Splitting:**
+For each microservice, we could define REST API endpoints for important actions associated with them, e.g. 
+`POST /api/payments/{orderId}` for processing the payment of a particular order. For communication between 
+microservices, we could implement a messaging broker like Kafka or RabbitMQ. Connectors between these packages in the 
+current monolith code, e.g. EventBus, could be displaced by these message brokers.
